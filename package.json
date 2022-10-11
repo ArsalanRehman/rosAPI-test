@@ -1,0 +1,16 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "rosSubscriber.js",
+  "scripts": {
+    "start": "nodemon rosSubscriber.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^6.6.1",
+    "nodemon": "^2.0.20",
+    "rosnodejs": "^3.1.0"
+  }
+}
