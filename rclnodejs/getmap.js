@@ -1,14 +1,15 @@
 const rclnodejs = require('rclnodejs');
+const msg = rclnodejs.require('nav_msgs/msg/OccupancyGrid').msg;
 
 async function run() {
   try {
     await rclnodejs.init();
     const node = rclnodejs.createNode('subscriber_node');
     const sub = node.createSubscription(
+      'nav_msgs/msg/OccupancyGrid',
       '/map',
-      'nav_msgs/OccupancyGrid',
       (msg) => {
-        console.log(`Received message: ${msg.data}`);
+        console.log(msg);
       }
     );
     rclnodejs.spin(node);
