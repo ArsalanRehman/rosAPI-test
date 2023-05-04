@@ -159,6 +159,14 @@ const polygon = [
   [300, -100],
   [100, -100],
 ];
+// const polygon = [
+//   [200, -90.9],
+//   [309.4, -247.4],
+//   [190.6, -247.4],
+//   [90.6, -90.9],
+//   [150, 77.8],
+// ];
+
 console.log(`first ${polygon}`);
 for (let i = 0; i < polygon.length; i++) {
   const y = polygon[i][1]; // get the y-coordinate
