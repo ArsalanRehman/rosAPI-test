@@ -2,14 +2,14 @@ const rclnodejs = require('rclnodejs');
 const Jimp = require('jimp');
 // const msg = rclnodejs.require('nav_msgs/msg/OccupancyGrid').msg;
 
-async function run() {
+async function getMapRos2() {
   try {
     await rclnodejs.init();
     const node = rclnodejs.createNode('subscriber_node');
     const sub = node.createSubscription(
       'nav_msgs/msg/OccupancyGrid',
       '/map',
-      (msg) => {
+      async (msg) => {
         // console.log(msg);
         map_width = msg.info.width;
         map_height = msg.info.height;
@@ -27,20 +27,18 @@ async function run() {
             );
           }
         }
-        image.rotate(180);
-        image.mirror(true, false);
+        // image.rotate(180);
+        // image.mirror(true, false);
+        const ImageBase64 = await image.getBase64Async(Jimp.MIME_JPEG);
+        console.log(ImageBase64);
         image.write(`images/rcl_map.jpg`);
         node.destroySubscription(sub);
       }
     );
-    setTimeout(() => {
-      console.log('Unsubscribing from the topic');
-      node.destroySubscription(sub);
-    }, 5000);
     rclnodejs.spin(node);
   } catch (error) {
     console.error(`Error: ${error}`);
   }
 }
 
-run();
+getMapRos2();
