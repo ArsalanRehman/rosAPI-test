@@ -1,5 +1,4 @@
 const rclnodejs = require('rclnodejs');
-const Jimp = require('jimp');
 
 async function liveMap(req, res) {
   try {
@@ -10,10 +9,6 @@ async function liveMap(req, res) {
       '/live_map',
       async (msg) => {
         console.log(msg);
-        // res.status(200).json({
-        //   success: true,
-        //   data: msg,
-        // });
       }
     );
     rclnodejs.spin(node);
