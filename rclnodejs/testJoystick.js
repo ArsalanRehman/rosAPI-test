@@ -4,7 +4,7 @@ const WebSocket = require('websocket').client;
 const client = new WebSocket();
 
 // Connect to the WebSocket server
-client.connect('ws://192.168.108.203:8080');
+client.connect('ws://192.168.109.139:8585');
 
 // Handle WebSocket connection open
 client.on('connect', (connection) => {

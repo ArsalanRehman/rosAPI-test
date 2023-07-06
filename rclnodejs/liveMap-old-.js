@@ -45,3 +45,21 @@
 //     });
 //   }
 // };
+
+const ros = require('./ros_util');
+
+ros.init_ros();
+const rclnodejs = ros.get_rclnodejs();
+liveMap(rclnodejs);
+
+function liveMap(rclnodejs) {
+  const node = new rclnodejs.Node('rosTestAPI');
+  const sub = node.createSubscription(
+    'std_msgs/msg/String',
+    'live_map',
+    async (msg) => {
+      console.log(msg);
+    }
+  );
+  node.spin();
+}
