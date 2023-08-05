@@ -4,7 +4,7 @@ const WebSocket = require('websocket').client;
 const client = new WebSocket();
 
 // Connect to the WebSocket server
-client.connect('tcp://4.tcp.eu.ngrok.io:18553');
+client.connect('ws://localhost:8586');
 
 // Handle WebSocket connection open
 client.on('connect', (connection) => {
