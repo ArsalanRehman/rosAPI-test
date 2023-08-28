@@ -1,18 +1,21 @@
 const WebSocket = require('ws');
 
-const ws = new WebSocket('ws://localhost:8586');
+const ws = new WebSocket('ws://localhost:8585');
 
 ws.on('open', () => {
   console.log('Connected to WebSocket server.');
 });
 
 // WebSocket 'message' event handler
-ws.on('message', (data) => {
+ws.on('message', (msg) => {
   try {
-    const pose = JSON.parse(data);
+    const data = JSON.parse(msg);
+    // console.log(data);
     setInterval(() => {
-      console.log('Received pose data:', pose);
-    }, 10000);
+      // console.log(object);
+      console.log('liveMap', data.base64Map);
+      // console.log('robotPose', data.robotPose);
+    }, 3000);
 
     // For example, update a visualization, store in a database, etc.
   } catch (error) {
