@@ -71,3 +71,71 @@
 //     // });
 //   }
 // };
+
+/////////////////////////////  PART 2  ///////////////////////////////
+
+// exports.drawPolygons = async () => {
+//   try {
+//     const mapVertices = await MapModel.find();
+//     const filename = path.join(mapPath, 'map.jpeg');
+
+//     // Read the file into a buffer
+//     const buffer = fs.readFileSync(filename);
+//     // Get the dimensions of the image from the buffer
+//     const { width, height } = sizeOf(buffer);
+
+//     // Iterate through each zone in mapVertices
+//     for (const zone of mapVertices) {
+//       // Extract vertices and colorHex for the current zone
+//       const { vertices, colorHex, zoneName } = zone;
+//       console.log(zone);
+
+//       // Apply the transformation to the polygon coordinates
+//       for (let i = 0; i < vertices.length; i++) {
+//         const y = vertices[i][1];
+//         const newY = height - Math.abs(y);
+//         vertices[i][1] = newY;
+//       }
+
+//       // Load the image
+//       const image = await loadImage(filename);
+
+//       // Create a canvas with the same dimensions as the image
+//       const canvas = createCanvas(image.width, image.height);
+//       const ctx = canvas.getContext('2d');
+
+//       // Draw the image on the canvas
+//       ctx.drawImage(image, 0, 0, image.width, image.height);
+
+//       // Draw the current polygon on the canvas
+//       ctx.beginPath();
+//       ctx.moveTo(vertices[0][0], vertices[0][1]);
+//       for (let i = 1; i < vertices.length; i++) {
+//         ctx.lineTo(vertices[i][0], vertices[i][1]);
+//       }
+//       ctx.closePath();
+//       ctx.fillStyle = colorHex;
+//       ctx.fill();
+
+//       // Save the canvas to a file with a unique name based on zoneName
+//       const outputFilename = path.join(mapPath, `${zoneName}.jpeg`);
+//       const out = fs.createWriteStream(outputFilename);
+//       const stream = canvas.createJPEGStream({ quality: 0.95 });
+//       await new Promise((resolve, reject) => {
+//         stream.pipe(out);
+//         out.on('finish', () => {
+//           console.log(`Polygon for ${zoneName} drawn successfully`);
+//           resolve();
+//         });
+//         out.on('error', (err) => {
+//           console.error(err);
+//           reject(err);
+//         });
+//       });
+//     }
+
+//     // Send a success response after drawing all polygons
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };

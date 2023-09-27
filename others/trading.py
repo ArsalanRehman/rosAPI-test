@@ -17,7 +17,7 @@
 
 import pandas as pd
 
-initial_balance = 1000  # Initial balance
+initial_balance = 1500  # Initial balance
 interest_rate = 0.10   # 10% profit per week
 weeks = 100             # Number of weeks
 balance_list = [initial_balance]  # Initialize a list with the initial balance
