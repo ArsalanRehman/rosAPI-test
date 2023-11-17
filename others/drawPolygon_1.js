@@ -139,3 +139,201 @@
 //     console.error(err);
 //   }
 // };
+
+/////////////////////////////////////////////////////////////////////////////////////
+// exports.drawPolygons = async () => {
+//   try {
+//     const mapVertices = await ZoneModel.find()
+//     // Load the image
+//     const filePath = path.join(mapPath, 'mirrored.jpeg')
+//     const inputFilePath = path.join(mapPath, 'map.jpeg')
+//     fs.access(filePath, fs.constants.F_OK, async (err) => {
+//       if (err) {
+//         await mirrorImage(inputFilePath, filePath)
+//       }
+//     })
+//     const image = await loadImage(filePath)
+
+//     // Create a map to store canvases for each zoneType
+//     const canvases = new Map()
+
+//     // Iterate through each zone in mapVertices
+//     for (const zone of mapVertices) {
+//       // Extract vertices and colorHex for the current zone
+//       const { vertices, colorHex, zoneName, zoneType } = zone
+
+//       // Apply the transformation to the polygon coordinates
+//       const liveResosultion = await liveDataController.liveData()
+//       var resolution = liveResosultion.mapMetaData.resolution
+//       console.log('Map Resolution : ', resolution)
+//       // var resolution = 1 / 0.035
+//       for (let i = 0; i < vertices.length; i++) {
+//         var x_digital = vertices[i][0] * resolution
+//         var y_digital = Math.abs(vertices[i][1]) * resolution
+
+//         vertices[i][0] = Number(x_digital)
+//         vertices[i][1] = Number(y_digital)
+//       }
+
+//       // Check if a canvas exists for the current zoneType, create one if not
+//       if (!canvases.has(zoneType)) {
+//         const canvas = createCanvas(image.width, image.height)
+//         const ctx = canvas.getContext('2d')
+
+//         // Draw the image on the canvas
+//         ctx.drawImage(image, 0, 0, image.width, image.height)
+
+//         canvases.set(zoneType, { canvas, ctx })
+//       }
+
+//       const { canvas, ctx } = canvases.get(zoneType)
+
+//       // Draw the current polygon on the canvas
+//       ctx.beginPath()
+//       ctx.moveTo(vertices[0][0], vertices[0][1])
+//       for (let i = 1; i < vertices.length; i++) {
+//         ctx.lineTo(vertices[i][0], vertices[i][1])
+//       }
+//       ctx.closePath()
+//       ctx.fillStyle = colorHex
+//       ctx.fill()
+
+//       console.log(`Polygon for ${zoneName} (zoneType: ${zoneType}) drawn.`)
+//     }
+
+//     // Save each canvas to a file with a unique name based on zoneType
+//     for (const [zoneType, { canvas }] of canvases.entries()) {
+//       var outputFilename = path.join(mapPath, `${zoneType}.jpeg`)
+//       const out = fs.createWriteStream(outputFilename)
+//       const stream = await canvas.createJPEGStream({ quality: 0.95 })
+
+//       await new Promise((resolve, reject) => {
+//         stream.pipe(out)
+//         out.on('finish', async () => {
+//           console.log(`Canvas for zoneType: ${zoneType} saved successfully.`)
+//           mirrorImage(outputFilename, outputFilename)
+//           resolve()
+//         })
+//         out.on('error', (err) => {
+//           console.error(err)
+//           reject(err)
+//         })
+//       })
+//     }
+//     // mirrorImage(outputFilename, outputFilename);
+
+//     console.log('All polygons drawn and saved successfully.')
+//   } catch (err) {
+//     console.error(err)
+//   }
+// }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// exports.drawPolygons = async () => {
+//   try {
+//     const mapVertices = await ZoneModel.find()
+//     // Load the image
+//     const filePath = path.join(mapPath, 'mirrored.jpeg')
+//     const inputFilePath = path.join(mapPath, 'map.jpeg')
+//     fs.access(filePath, fs.constants.F_OK, async (err) => {
+//       if (err) {
+//         await mirrorImage(inputFilePath, filePath)
+//       }
+//     })
+//     const image = await loadImage(filePath)
+
+//     // Create a map to store canvases for each zoneType
+//     const canvases = new Map()
+
+//     // Iterate through each zone in mapVertices
+//     for (const zone of mapVertices) {
+//       // Extract vertices and colorHex for the current zone
+//       const { vertices, colorHex, zoneName, zoneType } = zone
+
+//       // Apply the transformation to the polygon coordinates
+//       const liveResolution = await liveDataController.liveData()
+//       var resolution =
+//         1 / liveResolution.mapMetaData.resolution ||
+//         1 / process.env.mapResolution
+//       console.log('Map Resolution: ', resolution)
+//       for (let i = 0; i < vertices.length; i++) {
+//         var x_digital = vertices[i][0] * resolution
+//         var y_digital = Math.abs(vertices[i][1]) * resolution
+
+//         vertices[i][0] = Number(x_digital)
+//         vertices[i][1] = Number(y_digital)
+//       }
+
+//       // Calculate the bounding box around the polygon
+//       const minX = Math.min(...vertices.map((v) => v[0]))
+//       const minY = Math.min(...vertices.map((v) => v[1]))
+//       const maxX = Math.max(...vertices.map((v) => v[0]))
+//       const maxY = Math.max(...vertices.map((v) => v[1]))
+
+//       // Calculate the padding based on the bounding box dimensions
+//       const paddingX = 15
+//       const paddingY = 15
+
+//       // Check if a canvas exists for the current zoneType, create one if not
+//       if (!canvases.has(zoneType)) {
+//         const canvas = createCanvas(image.width, image.height)
+//         const ctx = canvas.getContext('2d')
+
+//         // Draw the image on the canvas
+//         ctx.drawImage(image, 0, 0, image.width, image.height)
+
+//         canvases.set(zoneType, { canvas, ctx })
+//       }
+
+//       const { canvas, ctx } = canvases.get(zoneType)
+
+//       // Check if zoneType is "keepout_mask" and add dynamic padding
+//       if (zoneType === 'keepout_mask' || zoneType === 'preferred_lane_mask') {
+//         // Fill the padding with grey color
+//         ctx.fillStyle = 'grey' // Set the grey color (you can use any color you prefer)
+//         ctx.fillRect(
+//           minX - paddingX,
+//           minY - paddingY,
+//           maxX - minX + 2 * paddingX,
+//           maxY - minY + 2 * paddingY
+//         )
+//       }
+
+//       // Draw the polygon with padding based on the bounding box
+//       ctx.beginPath()
+//       ctx.moveTo(vertices[0][0], vertices[0][1])
+//       for (let i = 1; i < vertices.length; i++) {
+//         ctx.lineTo(vertices[i][0], vertices[i][1])
+//       }
+//       ctx.closePath()
+//       ctx.fillStyle = colorHex
+//       ctx.fill()
+
+//       console.log(`Polygon for ${zoneName} (zoneType: ${zoneType}) drawn.`)
+//     }
+
+//     // Save each canvas to a file with a unique name based on zoneType
+//     for (const [zoneType, { canvas }] of canvases.entries()) {
+//       var outputFilename = path.join(mapPath, `${zoneType}.jpeg`)
+//       const out = fs.createWriteStream(outputFilename)
+//       const stream = await canvas.createJPEGStream({ quality: 0.95 })
+
+//       await new Promise((resolve, reject) => {
+//         stream.pipe(out)
+//         out.on('finish', async () => {
+//           console.log(`Canvas for zoneType: ${zoneType} saved successfully.`)
+//           mirrorImage(outputFilename, outputFilename)
+//           resolve()
+//         })
+//         out.on('error', (err) => {
+//           console.error(err)
+//           reject(err)
+//         })
+//       })
+//     }
+
+//     console.log('All polygons drawn and saved successfully.')
+//   } catch (err) {
+//     console.error(err)
+//   }
+// }
