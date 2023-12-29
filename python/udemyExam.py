@@ -24,7 +24,7 @@ def on_release(key):
         pass
 
 def click_at_location(x, y, num_clicks):
-    time.sleep(5)  # Wait for 5 seconds before starting clicks
+    time.sleep(5)  # Wait for 5 seconds 
     with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
         try:
             for _ in range(num_clicks):
@@ -35,13 +35,12 @@ def click_at_location(x, y, num_clicks):
         finally:
             listener.stop()
 
-# Replace these coordinates with the desired location
-# click_location = (500, 500)
+# coordinates 
 click_location = (1705, 1048)
             
 
-# Set the number of clicks
-num_clicks = 100
+# number of clicks
+num_clicks = 92
 
-# Call the function to perform the clicks
+#  perform the clicks
 click_at_location(*click_location, num_clicks)
